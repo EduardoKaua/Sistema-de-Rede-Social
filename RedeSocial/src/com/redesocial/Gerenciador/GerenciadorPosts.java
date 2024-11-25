@@ -1,4 +1,4 @@
-package com.redesocial.gerenciador;
+package com.redesocial.Gerenciador;
 
 import com.redesocial.modelo.Post;
 import java.util.ArrayList;
