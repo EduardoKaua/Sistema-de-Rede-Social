@@ -51,13 +51,16 @@ public class MenuPrincipal {
     private void fazerLogin() {
         System.out.print("Digite seu nome de usuário: ");
         String username = scanner.nextLine();
+        System.out.print("Digite sua senha: ");
+        String senha = scanner.nextLine();
+
         Usuario usuario = gerenciadorUsuarios.buscarPorUsername(username);
 
-        if (usuario != null) {
-            System.out.println("Bem-vindo, " + usuario.getUsername() + "!");
+        if (usuario != null && usuario.getSenha().equals(senha)) {
+            System.out.println("Login bem-sucedido! Bem-vindo, " + usuario.getUsername() + "!");
             exibirMenuLogado(usuario);
         } else {
-            System.out.println("Usuário não encontrado. Tente novamente.");
+            System.out.println("Usuário ou senha incorretos. Tente novamente.");
         }
     }
 
@@ -71,6 +74,12 @@ public class MenuPrincipal {
         String email = scanner.nextLine();
         System.out.print("Digite sua senha: ");
         String senha = scanner.nextLine();
+
+        // Verifica se o nome de usuário já está cadastrado
+        if (gerenciadorUsuarios.buscarPorUsername(username) != null) {
+            System.out.println("Nome de usuário já está em uso. Tente outro.");
+            return;
+        }
 
         Usuario novoUsuario = new Usuario(nome, username, email, senha);
         gerenciadorUsuarios.cadastrar(novoUsuario);
@@ -118,7 +127,7 @@ public class MenuPrincipal {
         String conteudo = scanner.nextLine();
 
         Post post = new Post(usuario, conteudo, java.time.LocalDateTime.now());
-        gerenciadorPosts.cadastrar(post);
+        gerenciadorPosts.criar(post);  // Use o método de criar post que você implementou anteriormente
         System.out.println("Post criado com sucesso!");
     }
 
