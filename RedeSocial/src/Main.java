@@ -1,13 +1,20 @@
-import java.util.Scanner;
+package com.redesocial;
+
+import com.redesocial.Gerenciador.GerenciadorUsuarios;
+import com.redesocial.Gerenciador.GerenciadorPosts;
+import com.redesocial.ui.MenuPrincipal;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int x = 0;
-        while (x != 6){
-            System.out.println("Opções: ");
-            x = sc.nextInt();
-        }
 
+    public static void main(String[] args) {
+        // Criando instâncias dos gerenciadores
+        GerenciadorUsuarios gerenciadorUsuarios = new GerenciadorUsuarios();
+        GerenciadorPosts gerenciadorPosts = new GerenciadorPosts();
+
+        // Criando a instância de MenuPrincipal passando os gerenciadores
+        MenuPrincipal menuPrincipal = new MenuPrincipal(gerenciadorUsuarios, gerenciadorPosts);
+
+        // Exibindo o menu principal
+        menuPrincipal.exibirMenu();
     }
 }

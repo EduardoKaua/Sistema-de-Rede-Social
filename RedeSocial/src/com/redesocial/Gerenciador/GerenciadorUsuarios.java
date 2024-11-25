@@ -4,37 +4,59 @@ import com.redesocial.modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
- // Permite cadastrar, buscar e listar usuários.
-
 public class GerenciadorUsuarios {
-    private List<Usuario> usuarios;
-    private int proximoId;
+    private List<Usuario> usuarios = new ArrayList<>();
+    private int proximoId = 1;
 
-    public GerenciadorUsuarios() {
-        this.usuarios = new ArrayList<>();
-        this.proximoId = 1;
-    }
-
-    // cadastrar um novo usuário
     public void cadastrar(Usuario usuario) {
         usuario.setId(proximoId++);
         usuarios.add(usuario);
     }
 
-    // Método para buscar um usuário pelo ID
     public Usuario buscarPorId(int id) {
-        return usuarios.stream()
-                .filter(usuario -> usuario.getId() == id)
-                .findFirst()
-                .orElse(null);
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId() == id) {
+                return usuario;
+            }
+        }
+        return null;
     }
 
-    // Método para buscar um usuário pelo username
     public Usuario buscarPorUsername(String username) {
-        return usuarios.stream()
-                .filter(usuario -> usuario.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsername().equals(username)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
 
+    public List<Usuario> buscarPorNome(String nome) {
+        List<Usuario> resultado = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNome().contains(nome)) {
+                resultado.add(usuario);
+            }
+        }
+        return resultado;
+    }
+
+    public boolean atualizar(Usuario usuario) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId() == usuario.getId()) {
+                usuarios.set(i, usuario);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean deletar(int id) {
+        Usuario usuario = buscarPorId(id);
+        if (usuario != null) {
+            usuarios.remove(usuario);
+            return true;
+        }
+        return false;
     }
 }
