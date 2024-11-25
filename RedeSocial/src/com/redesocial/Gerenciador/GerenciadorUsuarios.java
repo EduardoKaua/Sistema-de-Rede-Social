@@ -9,8 +9,15 @@ public class GerenciadorUsuarios {
     private int proximoId = 1;
 
     public void cadastrar(Usuario usuario) {
+        // Verifica se o email contém o caractere '@'
+        if (!usuario.getEmail().contains("@")) {
+            System.out.println("Erro: O email precisa conter '@'. Não foi possível cadastrar o usuário.");
+            return;
+        }
+
         usuario.setId(proximoId++);
         usuarios.add(usuario);
+        System.out.println("Usuário cadastrado com sucesso!");
     }
 
     public Usuario buscarPorId(int id) {

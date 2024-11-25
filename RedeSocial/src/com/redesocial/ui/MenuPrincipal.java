@@ -127,7 +127,8 @@ public class MenuPrincipal {
         String conteudo = scanner.nextLine();
 
         Post post = new Post(usuario, conteudo, java.time.LocalDateTime.now());
-        gerenciadorPosts.criar(post);  // Use o método de criar post que você implementou anteriormente
+        gerenciadorPosts.criar(post);  // Adiciona o post ao GerenciadorPosts
+        usuario.adicionarPost(post);  // Adiciona o post à lista de posts do usuário
         System.out.println("Post criado com sucesso!");
     }
 
@@ -139,6 +140,17 @@ public class MenuPrincipal {
         System.out.println("Data de cadastro: " + usuario.getDataCadastro());
         System.out.println("Amigos: " + usuario.getAmigos().size());
         System.out.println("Posts: " + usuario.getPosts().size());
+
+
+        // Exibindo os posts do usuário
+        if (usuario.getPosts().isEmpty()) {
+            System.out.println("Nenhum post encontrado.");
+        } else {
+            for (Post post : usuario.getPosts()) {
+                // Exibe o conteúdo do post
+                System.out.println("Post de "+usuario.getNome()+ " : " + post.getConteudo());
+            }
+        }
     }
 
     // Método para gerenciar amizades
