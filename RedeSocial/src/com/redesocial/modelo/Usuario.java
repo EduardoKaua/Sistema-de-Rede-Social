@@ -38,10 +38,27 @@ public class Usuario {
     public void setDataCadastro(LocalDateTime dataCadastro) { this.dataCadastro = dataCadastro; }
 
     public List<Usuario> getAmigos() { return amigos; }
-    public void adicionarAmigo(Usuario amigo) { amigos.add(amigo); }
-    public void removerAmigo(Usuario amigo) { amigos.remove(amigo); }
+
+    // Método para adicionar amigo
+    public void adicionarAmigo(Usuario amigo) {
+        if (amigo != null && !this.amigos.contains(amigo) && !this.equals(amigo)) {
+            this.amigos.add(amigo);
+        } else {
+            System.out.println("Este usuário já é seu amigo ou é o mesmo usuário.");
+        }
+    }
+
+    // Método para remover amigo
+    public void removerAmigo(Usuario amigo) {
+        if (amigo != null && this.amigos.contains(amigo)) {
+            this.amigos.remove(amigo);
+        } else {
+            System.out.println("Este usuário não é seu amigo.");
+        }
+    }
 
     public List<Post> getPosts() { return posts; }
+
     public void adicionarPost(Post post) { posts.add(post); }
 
     @Override

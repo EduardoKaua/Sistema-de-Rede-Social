@@ -83,7 +83,7 @@ public class MenuPrincipal {
 
         Usuario novoUsuario = new Usuario(nome, username, email, senha);
         gerenciadorUsuarios.cadastrar(novoUsuario);
-        System.out.println("Usuário cadastrado com sucesso!");
+
     }
 
     // Menu para usuários logados
@@ -141,21 +141,86 @@ public class MenuPrincipal {
         System.out.println("Amigos: " + usuario.getAmigos().size());
         System.out.println("Posts: " + usuario.getPosts().size());
 
-
         // Exibindo os posts do usuário
         if (usuario.getPosts().isEmpty()) {
             System.out.println("Nenhum post encontrado.");
         } else {
             for (Post post : usuario.getPosts()) {
-                // Exibe o conteúdo do post
-                System.out.println("Post de "+usuario.getNome()+ " : " + post.getConteudo());
+                System.out.println("\nPost: " + post.getConteudo());
             }
         }
     }
 
     // Método para gerenciar amizades
     private void gerenciarAmizades(Usuario usuario) {
-        System.out.println("\nGerenciar amizades ainda não implementado.");
+        while (true) {
+            System.out.println("\nGerenciar amizades");
+            System.out.println("1. Adicionar amigo");
+            System.out.println("2. Remover amigo");
+            System.out.println("3. Ver lista de amigos");
+            System.out.println("4. Voltar");
+            System.out.print("Escolha uma opção: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();  // Limpa o buffer do scanner
+
+            switch (opcao) {
+                case 1:
+                    adicionarAmigo(usuario);
+                    break;
+                case 2:
+                    removerAmigo(usuario);
+                    break;
+                case 3:
+                    verAmigos(usuario);
+                    break;
+                case 4:
+                    return;  // Volta ao menu anterior
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
+
+    // Método para adicionar um amigo
+    private void adicionarAmigo(Usuario usuario) {
+        System.out.print("Digite o nome de usuário do amigo que deseja adicionar: ");
+        String username = scanner.nextLine();
+        Usuario amigo = gerenciadorUsuarios.buscarPorUsername(username);
+
+        if (amigo != null && !amigo.equals(usuario)) {
+            usuario.adicionarAmigo(amigo);
+            amigo.adicionarAmigo(usuario);  // Adiciona recíproco
+            System.out.println("Você adicionou " + amigo.getNome() + " como amigo.");
+        } else {
+            System.out.println("Usuário não encontrado ou você está tentando adicionar a si mesmo.");
+        }
+    }
+
+    // Método para remover um amigo
+    private void removerAmigo(Usuario usuario) {
+        System.out.print("Digite o nome de usuário do amigo que deseja remover: ");
+        String username = scanner.nextLine();
+        Usuario amigo = gerenciadorUsuarios.buscarPorUsername(username);
+
+        if (amigo != null) {
+            usuario.removerAmigo(amigo);
+            amigo.removerAmigo(usuario);  // Remove o amigo de forma recíproca
+            System.out.println("Você removeu " + amigo.getNome() + " da sua lista de amigos.");
+        } else {
+            System.out.println("Usuário não encontrado ou não é seu amigo.");
+        }
+    }
+
+    // Método para ver a lista de amigos
+    private void verAmigos(Usuario usuario) {
+        System.out.println("\nAmigos de " + usuario.getUsername() + ":");
+        if (usuario.getAmigos().isEmpty()) {
+            System.out.println("Você não tem amigos.");
+        } else {
+            for (Usuario amigo : usuario.getAmigos()) {
+                System.out.println(amigo.getNome() + " (" + amigo.getUsername() + ")");
+            }
+        }
     }
 
     // Método para ver o feed de notícias
