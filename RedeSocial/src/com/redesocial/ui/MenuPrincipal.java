@@ -67,14 +67,51 @@ public class MenuPrincipal {
 
     // Método para cadastrar um novo usuário
     private void cadastrarUsuario() {
-        System.out.print("Digite seu nome: ");
-        String nome = scanner.nextLine();
-        System.out.print("Digite seu nome de usuário: ");
-        String username = scanner.nextLine();
-        System.out.print("Digite seu email: ");
-        String email = scanner.nextLine();
-        System.out.print("Digite sua senha: ");
-        String senha = scanner.nextLine();
+        String nome;
+        while (true) {
+            System.out.print("Digite seu nome: ");
+            nome = scanner.nextLine();
+            if (nome.trim().length() >= 1) {
+                break;  // O nome contém pelo menos 1 caractere
+            } else {
+                System.out.println("O nome deve conter pelo menos 1 caractere. Tente novamente.");
+            }
+        }
+
+        String username;
+        while (true) {
+            System.out.print("Digite seu nome de usuário: ");
+            username = scanner.nextLine();
+            if (username.trim().length() >= 1) {
+                break;  // O nome de usuário contém pelo menos 1 caractere
+            } else {
+                System.out.println("O nome de usuário deve conter pelo menos 1 caractere. Tente novamente.");
+            }
+        }
+
+        // Validação de email
+        String email;
+        while (true) {
+            System.out.print("Digite seu email: ");
+            email = scanner.nextLine();
+            if (email.contains("@")) {
+                break; // O email contém "@" e é válido
+            } else {
+                System.out.println("Email inválido! O email deve conter '@'. Tente novamente.");
+            }
+        }
+
+        // Validação de senha com mínimo de 6 caracteres
+        String senha;
+        while (true) {
+            System.out.print("Digite sua senha (mínimo 6 caracteres): ");
+            senha = scanner.nextLine();
+            if (senha.length() >= 6) {
+                break;
+            } else {
+                System.out.println("A senha deve ter no mínimo 6 caracteres. Tente novamente.");
+            }
+        }
 
         // Verifica se o nome de usuário já está cadastrado
         if (gerenciadorUsuarios.buscarPorUsername(username) != null) {
