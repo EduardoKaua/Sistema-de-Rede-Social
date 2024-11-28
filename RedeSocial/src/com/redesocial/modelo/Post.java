@@ -97,7 +97,13 @@ public class Post {
     // Método toString() para exibir o post
     @Override
     public String toString() {
-        return "Post por " + autor.getUsername() + " - " + conteudo + " [" + dataPublicacao + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Post por ").append(autor.getUsername())
+                .append(" - ").append(conteudo)
+                .append(" [Data de publicação: ").append(dataPublicacao)
+                .append("]\nCurtidas: ").append(curtidas.size())
+                .append("\nComentários: ").append(comentarios.size());
+        return sb.toString();
     }
 
     // equals() e hashCode() baseados no id do Post

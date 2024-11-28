@@ -5,6 +5,7 @@ import com.redesocial.Gerenciador.GerenciadorPosts;
 import com.redesocial.modelo.Usuario;
 import com.redesocial.modelo.Post;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuPrincipal {
@@ -83,7 +84,6 @@ public class MenuPrincipal {
 
         Usuario novoUsuario = new Usuario(nome, username, email, senha);
         gerenciadorUsuarios.cadastrar(novoUsuario);
-
     }
 
     // Menu para usuários logados
@@ -94,7 +94,8 @@ public class MenuPrincipal {
             System.out.println("2. Ver perfil");
             System.out.println("3. Gerenciar amizades");
             System.out.println("4. Ver feed de notícias");
-            System.out.println("5. Sair");
+            System.out.println("5. Buscar usuários");
+            System.out.println("6. Sair");
             System.out.print("Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine();  // Limpa o buffer do scanner
@@ -113,6 +114,9 @@ public class MenuPrincipal {
                     verFeedNoticias(usuario);
                     break;
                 case 5:
+                    buscarUsuarios();  // Chama o método de buscar usuários
+                    break;
+                case 6:
                     System.out.println("Saindo...");
                     return;
                 default:
@@ -228,6 +232,36 @@ public class MenuPrincipal {
         System.out.println("\nFeed de notícias:");
         for (Post post : gerenciadorPosts.listarPorUsuario(usuario.getId())) {
             System.out.println(post);
+        }
+    }
+
+    // Método para buscar usuários
+    private void buscarUsuarios() {
+        System.out.println("=== Buscar Usuários ===");
+        System.out.print("Digite o nome ou username do usuário: ");
+        String termo = scanner.nextLine();
+
+        // Busca usuários por nome
+        List<Usuario> usuariosEncontrados = gerenciadorUsuarios.buscarPorNome(termo);
+        if (usuariosEncontrados.isEmpty()) {
+            System.out.println("Nenhum usuário encontrado.");
+        } else {
+            System.out.println("Usuários encontrados:");
+            for (Usuario u : usuariosEncontrados) {
+                System.out.println("- " + u.getNome() + " (@" + u.getUsername() + ")");
+            }
+
+            System.out.print("Gostaria de interagir com este usuários? mande amizade para ele, Digite 0 para voltar: ");
+            String escolha = scanner.nextLine();
+            if (!escolha.equals("0")) {
+                Usuario usuarioEscolhido = gerenciadorUsuarios.buscarPorUsername(escolha);
+                if (usuarioEscolhido != null) {
+                    System.out.println("Você escolheu: " + usuarioEscolhido.getNome());
+                    // Aqui você pode adicionar opções para interagir com o usuário escolhido
+                } else {
+                    System.out.println("Usuário não encontrado.");
+                }
+            }
         }
     }
 }

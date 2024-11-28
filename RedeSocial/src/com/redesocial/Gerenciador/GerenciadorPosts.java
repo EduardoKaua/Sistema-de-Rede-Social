@@ -6,6 +6,7 @@ import com.redesocial.modelo.Comentario;
 import com.redesocial.Gerenciador.GerenciadorUsuarios;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GerenciadorPosts {
@@ -45,6 +46,25 @@ public class GerenciadorPosts {
             }
         }
         return resultado;
+    }
+
+    // Método para listar o feed de um usuário (posts dele e dos seus amigos)
+    public List<Post> listarFeed(int idUsuario) {
+        Usuario usuario = new GerenciadorUsuarios().buscarPorId(idUsuario);  // Recupera o usuário
+        List<Post> feed = new ArrayList<>();
+
+        // Adiciona os posts do usuário
+        feed.addAll(this.listarPorUsuario(idUsuario));
+
+        // Adiciona os posts dos amigos do usuário
+        for (Usuario amigo : usuario.getAmigos()) {
+            feed.addAll(this.listarPorUsuario(amigo.getId()));
+        }
+
+        // Ordena o feed por data de publicação (da mais recente para a mais antiga)
+        feed.sort(Comparator.comparing(Post::getDataPublicacao).reversed());
+
+        return feed;
     }
 
     // Método para curtir um post

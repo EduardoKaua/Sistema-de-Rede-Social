@@ -48,6 +48,23 @@ public class GerenciadorUsuarios {
         return resultado;
     }
 
+    // Método para listar todos os usuários cadastrados
+    public List<Usuario> listarTodosUsuarios() {
+        return usuarios;
+    }
+
+    // Novo método para buscar e exibir todos os usuários cadastrados
+    public void buscarUsuariosCadastrados() {
+        if (usuarios.isEmpty()) {
+            System.out.println("Não há usuários cadastrados.");
+        } else {
+            System.out.println("Usuários cadastrados:");
+            for (Usuario usuario : usuarios) {
+                System.out.println("ID: " + usuario.getId() + ", Nome: " + usuario.getNome() + ", Email: " + usuario.getEmail());
+            }
+        }
+    }
+
     public boolean atualizar(Usuario usuario) {
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getId() == usuario.getId()) {

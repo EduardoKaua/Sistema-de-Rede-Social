@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Usuario {
     private Integer id;
@@ -39,27 +40,45 @@ public class Usuario {
 
     public List<Usuario> getAmigos() { return amigos; }
 
-    // Método para adicionar amigo
+    // Método para adicionar amigo (relacionamento bidirecional)
     public void adicionarAmigo(Usuario amigo) {
         if (amigo != null && !this.amigos.contains(amigo) && !this.equals(amigo)) {
             this.amigos.add(amigo);
+            amigo.adicionarAmigo(this);  // Adiciona o usuário como amigo do outro usuário
         } else {
             System.out.println("Este usuário já é seu amigo ou é o mesmo usuário.");
         }
     }
 
-    // Método para remover amigo
+    // Método para remover amigo (relacionamento bidirecional)
     public void removerAmigo(Usuario amigo) {
         if (amigo != null && this.amigos.contains(amigo)) {
             this.amigos.remove(amigo);
+            amigo.removerAmigo(this);  // Remove o usuário da lista de amigos do outro usuário
         } else {
             System.out.println("Este usuário não é seu amigo.");
         }
     }
 
+    // Método para adicionar post
     public List<Post> getPosts() { return posts; }
-
     public void adicionarPost(Post post) { posts.add(post); }
+
+    // Método para listar o feed de notícias (posts do próprio usuário e de seus amigos)
+    public List<Post> listarFeed() {
+        // Lista que contém os posts do próprio usuário e dos seus amigos
+        List<Post> feed = new ArrayList<>(this.posts);  // Adiciona os posts próprios do usuário
+
+        // Adiciona os posts dos amigos
+        for (Usuario amigo : amigos) {
+            feed.addAll(amigo.getPosts());
+        }
+
+        // Ordena os posts pela data de publicação (mais recente primeiro)
+        return feed.stream()
+                .sorted((post1, post2) -> post2.getDataPublicacao().compareTo(post1.getDataPublicacao()))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public String toString() {
